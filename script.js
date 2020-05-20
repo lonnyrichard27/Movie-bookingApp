@@ -1,3 +1,4 @@
+// DOM Selections
 const container = document.querySelector('.container');
 const seats = document.querySelectorAll('.row .seat:not(.occupied)');
 const count = document.getElementById('count');
@@ -8,11 +9,13 @@ populateUI();
 
 let ticketPrice = +movieSelect.value;
 
+
 // save selected movie index and price
 function setMovieData(movieIndex, moviePrice) {
     localStorage.setItem('selectedMovieIndex', movieIndex);
     localStorage.setItem('selectedMoviePrice', moviePrice);
 }
+
 
 // update the total price and number of seats ('count')
 function updateSelectedCount(){
@@ -26,9 +29,12 @@ function updateSelectedCount(){
 
     // get the length of the nodelist and reflecting it on our view   
     const selectedSeatsCount = selectedSeats.length;
+
     count.innerText = selectedSeatsCount;
+
     total.innerText = selectedSeatsCount * ticketPrice;
 }
+
 
 // get data from localStorage and populate UI
 function populateUI() {
@@ -47,24 +53,30 @@ function populateUI() {
     if (selectedMovieIndex !== null) {
         movieSelect.selectedIndex = selectedMovieIndex;
     }
-}
+};
 
 // movie select event
 movieSelect.addEventListener('change', (e ) => {
+
     //  the '+' sign here is converting that value to a number
     ticketPrice = +e.target.value;
-    setMovieData(e.target.selectedIndex, e.target.value)
+
+    setMovieData(e.target.selectedIndex, e.target.value);
+
     updateSelectedCount();
 })
 
 container.addEventListener('click', (e) => {
+
     // checking if seats are occupied 
     if (e.target.classList.contains('seat') && !e.target.classList.contains('occupied')) {
+
         // this toggle function allows you to unselect stuff youve clicked 
         e.target.classList.toggle('selected');
         updateSelectedCount();
+    
     }
-})
+});
 
 // initial count amd total set
 updateSelectedCount();
