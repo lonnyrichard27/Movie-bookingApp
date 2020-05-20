@@ -80,3 +80,14 @@ container.addEventListener('click', (e) => {
 
 // initial count amd total set
 updateSelectedCount();
+
+{/* <div class="row">
+<div class="seat"></div>
+<div class="seat"></div>
+<div class="seat"></div>
+<div class="seat occupied"></div>
+<div class="seat occupied"></div>
+<div class="seat"></div>
+<div class="seat"></div>
+<div class="seat"></div>
+</div> */}
