@@ -4,30 +4,67 @@ const count = document.getElementById('count');
 const total = document.getElementById('total');
 const movieSelect = document.getElementById('movie');
 
+populateUI();
+
 let ticketPrice = +movieSelect.value;
+
+// save selected movie index and price
+function setMovieData(movieIndex, moviePrice) {
+    localStorage.setItem('selectedMovieIndex', movieIndex);
+    localStorage.setItem('selectedMoviePrice', moviePrice);
+}
 
 // update the total price and number of seats ('count')
 function updateSelectedCount(){
     const selectedSeats = document.querySelectorAll('.row .seat.selected');
 
-    // get the length of the nodelist and reflecting it on our view 
+    // copy selected seats in an array, map through the array and return a new array of indexes
+    const seatsIndex = [...selectedSeats].map( seat =>
+        [...seats].indexOf(seat));
+    
+    localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex));
+
+    // get the length of the nodelist and reflecting it on our view   
     const selectedSeatsCount = selectedSeats.length;
     count.innerText = selectedSeatsCount;
     total.innerText = selectedSeatsCount * ticketPrice;
+}
+
+// get data from localStorage and populate UI
+function populateUI() {
+    const selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
+
+    if (selectedSeats !== null && selectedSeats.length > 0) {
+        seats.forEach((seat, index) => {
+            if (selectedSeats.indexOf(index) > -1) {
+                seat.classList.add('selected');
+            }
+        })
+    }
+
+    const selectedMovieIndex = localStorage.getItem('selectedMovieIndex');
+
+    if (selectedMovieIndex !== null) {
+        movieSelect.selectedIndex = selectedMovieIndex;
+    }
 }
 
 // movie select event
 movieSelect.addEventListener('change', (e ) => {
     //  the '+' sign here is converting that value to a number
     ticketPrice = +e.target.value;
-    updateSelectedCount()
+    setMovieData(e.target.selectedIndex, e.target.value)
+    updateSelectedCount();
 })
+
 container.addEventListener('click', (e) => {
     // checking if seats are occupied 
     if (e.target.classList.contains('seat') && !e.target.classList.contains('occupied')) {
         // this toggle function allows you to unselect stuff youve clicked 
         e.target.classList.toggle('selected');
-
         updateSelectedCount();
     }
 })
+
+// initial count amd total set
+updateSelectedCount();
